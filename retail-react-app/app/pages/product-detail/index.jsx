@@ -46,9 +46,6 @@ import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {useToast} from '@salesforce/retail-react-app/app/hooks/use-toast'
 import {useWishList} from '@salesforce/retail-react-app/app/hooks/use-wish-list'
 
-// import {pluckIds} from '../../utils/utils'
-// import {usePromotions} from '@salesforce/commerce-sdk-react'
-
 const ProductDetail = () => {
     const {formatMessage} = useIntl()
     const history = useHistory()
@@ -89,19 +86,7 @@ const ProductDetail = () => {
             keepPreviousData: true
         }
     )
-    // Get promotionIds as a string of comma-separated values
-    // const promotionIds = pluckIds(product?.productPromotions, 'promotionId')
-    // const {data: promotions} = usePromotions(
-    //     {
-    //         parameters: {
-    //             ids: promotionIds
-    //         }
-    //     },
-    //     {
-    //         enabled: !isProductLoading
-    //     }
-    // )
-    // const promos = promotions?.data || []
+
     // Note: Since category needs id from product detail, it can't be server side rendered atm
     // until we can do dependent query on server
     const {
@@ -379,8 +364,6 @@ const ProductDetail = () => {
                         <ProductView
                             product={product}
                             category={primaryCategory?.parentCategoryTree || []}
-                            //add promotions, if there are any
-                            // promotions={promos || []}
                             addToCart={(variant, quantity) =>
                                 handleAddToCart([{product, variant, quantity}])
                             }

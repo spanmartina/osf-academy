@@ -19,13 +19,10 @@ import {
     Text,
     VStack,
     Fade,
-    useTheme,
-    Tooltip, // Chakra UI component to show a tooltip when a label is hovered
-    Spinner
+    useTheme
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import {useDerivedProduct} from '@salesforce/retail-react-app/app/hooks'
 import {useAddToCartModalContext} from '@salesforce/retail-react-app/app/hooks/use-add-to-cart-modal'
-import {usePromotions} from '@salesforce/commerce-sdk-react'
 
 // project components
 import SwatchGroup from '@salesforce/retail-react-app/app/components/swatch-group'
@@ -89,7 +86,6 @@ const ProductView = forwardRef(
         {
             product,
             category,
-            // promotions, //prior exercise - implemented from product-detail
             showFullLink = false,
             imageSize = 'md',
             isWishlistLoading = false,
@@ -106,23 +102,6 @@ const ProductView = forwardRef(
         },
         ref
     ) => {
-        //implement promotions directly in Product View
-        const [activePromotionId, setActivePromotionId] = useState(undefined) // this is the hovered over promotion, set onOpen, removed onClose
-        const {productPromotions} = product || {} // this destructures productPromotions from the product API call, used in the iterator loop to show promo calloutMsg
-
-        const {data: promotions} = usePromotions(
-            {
-                parameters: {
-                    ids: activePromotionId
-                }
-            },
-            {
-                enabled: !isProductLoading
-            }
-        )
-        const promos = promotions?.data || [] //this takes the response from the hook above, and sets it in "promos" - this is what we'll use to build the tooltip.
-        //....
-
         const showToast = useToast()
         const intl = useIntl()
         const history = useHistory()
@@ -506,47 +485,6 @@ const ProductView = forwardRef(
                             </HideOnDesktop>
                             {isProductASet && <p>{product?.shortDescription}</p>}
                         </VStack>
-                        {/* Show Promotions: productPromotions is the array to loop over */}
-                        <Text>Available promotions:</Text>
-                        {/* productPromotions is destructured from prooduct.productPromotions
-                 That loop will build each line.  We wiil then call the setActivePromotionId method, which will prompt
-                 a re-render of the React SDK usePromotions, which will return a "promotions" object that is set to "Promos"
-                 Because we are fetching ONLY a single promotion, we can reference the "details" attribute
-                 of the first element returned.
-             */}
-
-                        {productPromotions &&
-                            productPromotions.map(({promotionId, calloutMsg}) => (
-                                <Tooltip
-                                    onOpen={() => {
-                                        setActivePromotionId(promotionId)
-                                    }}
-                                    onClose={() => {
-                                        setActivePromotionId(undefined)
-                                    }}
-                                    key={promotionId}
-                                    label={promos?.[0]?.details || <Spinner />}
-                                    aria-label="Promotion details"
-                                >
-                                    <Text>{calloutMsg}</Text>
-                                </Tooltip>
-                            ))}
-
-                        {/* Show Promotions---from /product-detail: promotions.data is the array to loop over */}
-                        {/* {promotions && (
-                            <Box>
-                                <Text>Available Promotions:</Text>
-                                {promotions?.map(({id, calloutMsg, details}) => (
-                                    <Tooltip
-                                        key={id}
-                                        label={details}
-                                        aria-label="Promotion details"
-                                    >
-                                        <Text>{calloutMsg}</Text>
-                                    </Tooltip>
-                                ))}
-                            </Box>
-                        )} */}
 
                         <Box>
                             {!showLoading && showInventoryMessage && (

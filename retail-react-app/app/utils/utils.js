@@ -199,15 +199,3 @@ export const mergeMatchedItems = (arr1 = [], arr2 = []) => {
  * @return {boolean}
  */
 export const isHydrated = () => typeof window !== 'undefined' && !window.__HYDRATING__
-
-/**
- * Returns a comma-separated list of ids from an array of objects
- * @param {Array} arrayIn
- * @param {string} idProperty
- * @returns comma-separated list of ids
- */
-
-export const pluckIds = (arrayIn = [], idProperty) => {
-    // Inspired by https://underscorejs.org/#pluck
-    return arrayIn?.map((iterator) => iterator[idProperty])?.toString()
-}

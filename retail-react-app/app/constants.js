@@ -54,7 +54,6 @@ export const cssColorGroups = {
 
 // Color to use for the UI surrounding the page in browsers.
 export const THEME_COLOR = '#0176D3'
-// export const THEME_COLOR = '#F0F8FF'
 
 export const FILTER_ACCORDION_SATE = 'filters-expanded-index'
 

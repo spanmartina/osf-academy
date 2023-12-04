@@ -11,8 +11,6 @@ import {useLocation} from 'react-router-dom'
 
 // Components
 import {
-    Alert,
-    AlertIcon,
     Box,
     Button,
     SimpleGrid,
@@ -53,19 +51,6 @@ import {useProductSearch} from '@salesforce/commerce-sdk-react'
  * The page renders SEO metadata and a few promotion
  * categories and products, data is from local file.
  */
-
-const MyHeader = ({name = "developer's name"}) => {
-    return (
-        <Box>
-            <h1>Hello, {name}!</h1>
-            <Alert padding="10" status="success">
-                <AlertIcon />
-                Chakra UI component unlocked!
-            </Alert>
-        </Box>
-    )
-}
-
 const Home = () => {
     const intl = useIntl()
     const einstein = useEinstein()
@@ -95,8 +80,6 @@ const Home = () => {
                 description="Commerce Cloud Retail React App"
                 keywords="Commerce Cloud, Retail React App, React Storefront"
             />
-
-            <MyHeader name="Martina" />
 
             <Hero
                 title={intl.formatMessage({

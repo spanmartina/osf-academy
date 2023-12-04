@@ -24,13 +24,11 @@ import {
 import * as queryKeyHelpers from '@salesforce/commerce-sdk-react/hooks/ShopperProducts/queryKeyHelpers'
 // Chakra
 import {
-    Text,
     Box,
     useDisclosure,
     useStyleConfig
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import {SkipNavLink, SkipNavContent} from '@chakra-ui/skip-nav'
-import {InfoOutlineIcon} from '@chakra-ui/icons'
 
 // Contexts
 import {CurrencyProvider} from '@salesforce/retail-react-app/app/contexts'
@@ -76,14 +74,6 @@ import {
 } from '@salesforce/retail-react-app/app/constants'
 
 import Seo from '@salesforce/retail-react-app/app/components/seo'
-
-import fetch from 'cross-fetch'
-const site_id = 'RefArch'
-const client_id = '264f0d69-a6b7-4001-a2df-20d025275702'
-const GEO_LOCATION = {
-    lat: '34.052235',
-    long: '-118.243683'
-}
 
 const onClient = typeof window !== 'undefined'
 
@@ -134,7 +124,6 @@ const App = (props) => {
 
     const [isOnline, setIsOnline] = useState(true)
     const styles = useStyleConfig('App')
-    const [closestStore, setClosestStore] = useState(undefined)
 
     const {isOpen, onOpen, onClose} = useDisclosure()
 
@@ -237,19 +226,6 @@ const App = (props) => {
         watchOnlineStatus((isOnline) => {
             setIsOnline(isOnline)
         })
-        const fetchStore = async () => {
-            const res = await fetch(
-                `http://localhost:3000/mobify/proxy/ocapi/s/${site_id}/dw/shop/v20_2/stores?latitude=${GEO_LOCATION.lat}&longitude=${GEO_LOCATION.long}&client_id=${client_id}`
-            )
-            if (res.ok) {
-                const storeResult = await res.json()
-                const firstStore = storeResult.data[0]
-                if (firstStore) {
-                    setClosestStore(firstStore)
-                }
-            }
-        }
-        fetchStore()
     }, [])
 
     useEffect(() => {
@@ -389,26 +365,6 @@ const App = (props) => {
                                 )}
                             </Box>
                             {!isOnline && <OfflineBanner />}
-                            {closestStore && (
-                                <Box
-                                    bg="blue.500"
-                                    w="100%"
-                                    display="flex"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    p={2}
-                                    color="white"
-                                >
-                                    <InfoOutlineIcon />
-                                    <Text fontWeight="bold" pl={1}>
-                                        Closest Store:{' '}
-                                    </Text>
-                                    <Text pl={2}>
-                                        {closestStore.name} - {closestStore.address1},{' '}
-                                        {closestStore.state_code}, {closestStore.postal_code}
-                                    </Text>
-                                </Box>
-                            )}
                             <AddToCartModalProvider>
                                 <SkipNavContent
                                     style={{
@@ -433,6 +389,7 @@ const App = (props) => {
                                 </SkipNavContent>
 
                                 {!isCheckout ? <Footer /> : <CheckoutFooter />}
+
                                 <AuthModal {...authModal} />
                             </AddToCartModalProvider>
                         </Box>
