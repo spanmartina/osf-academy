@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "hash": "b32d6db49a3867ee7a66",
+  "hash": "9564cda2b99018eadbba",
   "publicPath": "/mobify/bundle/development/",
   "outputPath": "C:\\Users\\marti\\Desktop\\Project\\osf-academy\\retail-react-app\\build",
   "assetsByChunkName": {
@@ -46,6 +46,9 @@
     "pages-page-not-found": [
       "pages-page-not-found.js"
     ],
+    "pages-youtube": [
+      "pages-youtube.js"
+    ],
     "vendor": [
       "vendor.js"
     ]
@@ -81,7 +84,7 @@
     {
       "type": "asset",
       "name": "main.js",
-      "size": 1167617,
+      "size": 1168804,
       "emitted": false,
       "comparedForEmit": false,
       "cached": true,
@@ -520,6 +523,31 @@
     },
     {
       "type": "asset",
+      "name": "pages-youtube.js",
+      "size": 3132,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false,
+        "related": {
+          "sourceMap": "pages-youtube.js.map"
+        }
+      },
+      "chunkNames": [
+        "pages-youtube"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "filteredRelated": 1,
+      "chunks": [
+        "pages-youtube"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
       "name": "pages-login-redirect.js",
       "size": 3016,
       "emitted": false,
@@ -885,6 +913,23 @@
       "auxiliaryAssetsSize": null,
       "children": {},
       "childAssets": {}
+    },
+    "pages-youtube": {
+      "name": "pages-youtube",
+      "chunks": [
+        "pages-youtube"
+      ],
+      "assets": [
+        {
+          "name": "pages-youtube.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 1,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
     }
   },
   "generator": "loadable-components",
@@ -977,6 +1022,12 @@
       "id": "pages-page-not-found",
       "files": [
         "pages-page-not-found.js"
+      ]
+    },
+    {
+      "id": "pages-youtube",
+      "files": [
+        "pages-youtube.js"
       ]
     },
     {
