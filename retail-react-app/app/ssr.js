@@ -11,6 +11,7 @@ import path from 'path'
 import {getRuntime} from '@salesforce/pwa-kit-runtime/ssr/server/express'
 import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/middleware'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
+import {isRemote} from '@salesforce/pwa-kit-runtime/utils/ssr-server'
 import helmet from 'helmet'
 
 const options = {
@@ -44,19 +45,27 @@ const {handler} = runtime.createHandler(options, (app) => {
                 useDefaults: true,
                 directives: {
                     'img-src': [
+                        "'self'",
                         // Default source for product images - replace with your CDN
-                        '*.commercecloud.salesforce.com'
+                        '*.commercecloud.salesforce.com',
+                        'data:'
                     ],
                     'script-src': [
+                        "'self'",
+                        "'unsafe-eval'",
                         // Used by the service worker in /worker/main.js
                         'storage.googleapis.com'
                     ],
                     'connect-src': [
+                        "'self'",
                         // Connect to Einstein APIs
                         'api.cquotient.com'
-                    ]
+                    ],
+                    'frame-src': ["'self'", 'https://www.youtube.com'],
+                    'upgrade-insecure-requests': isRemote() ? [] : null
                 }
-            }
+            },
+            hsts: isRemote()
         })
     )
 

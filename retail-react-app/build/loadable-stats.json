@@ -1,12 +1,12 @@
 {
   "name": "client",
-  "hash": "244524659d6616bbe822",
+  "hash": "dab7c5d32f44843ba805",
   "publicPath": "/mobify/bundle/development/",
   "outputPath": "C:\\Users\\marti\\Desktop\\Project\\osf-academy\\retail-react-app\\build",
   "assetsByChunkName": {
     "main": [
       "main.js",
-      "main.dc59b71bb829e485bd0e.hot-update.js"
+      "main.e1489ea9f4ec250fe924.hot-update.js"
     ],
     "pages-home": [
       "pages-home.js"
@@ -53,6 +53,9 @@
     "pages-page-not-found": [
       "pages-page-not-found.js"
     ],
+    "pages-youtube": [
+      "pages-youtube.js"
+    ],
     "vendor": [
       "vendor.js"
     ]
@@ -88,7 +91,7 @@
     {
       "type": "asset",
       "name": "main.js",
-      "size": 1173814,
+      "size": 1175020,
       "emitted": false,
       "comparedForEmit": false,
       "cached": true,
@@ -427,17 +430,17 @@
     },
     {
       "type": "asset",
-      "name": "main.dc59b71bb829e485bd0e.hot-update.js",
-      "size": 37244,
+      "name": "main.e1489ea9f4ec250fe924.hot-update.js",
+      "size": 26076,
       "emitted": false,
       "comparedForEmit": false,
       "cached": true,
       "info": {
         "hotModuleReplacement": true,
         "immutable": true,
-        "fullhash": "dc59b71bb829e485bd0e",
+        "fullhash": "e1489ea9f4ec250fe924",
         "related": {
-          "sourceMap": "main.dc59b71bb829e485bd0e.hot-update.js.map"
+          "sourceMap": "main.e1489ea9f4ec250fe924.hot-update.js.map"
         }
       },
       "chunkNames": [
@@ -604,6 +607,31 @@
     },
     {
       "type": "asset",
+      "name": "pages-youtube.js",
+      "size": 3132,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false,
+        "related": {
+          "sourceMap": "pages-youtube.js.map"
+        }
+      },
+      "chunkNames": [
+        "pages-youtube"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "filteredRelated": 1,
+      "chunks": [
+        "pages-youtube"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
       "name": "pages-login-redirect.js",
       "size": 3016,
       "emitted": false,
@@ -652,7 +680,7 @@
     },
     {
       "type": "asset",
-      "name": "main.dc59b71bb829e485bd0e.hot-update.json",
+      "name": "main.e1489ea9f4ec250fe924.hot-update.json",
       "size": 28,
       "emitted": false,
       "comparedForEmit": false,
@@ -660,7 +688,7 @@
       "info": {
         "hotModuleReplacement": true,
         "immutable": true,
-        "fullhash": "dc59b71bb829e485bd0e"
+        "fullhash": "e1489ea9f4ec250fe924"
       },
       "chunkNames": [],
       "chunkIdHints": [],
@@ -685,7 +713,7 @@
           "name": "main.js"
         },
         {
-          "name": "main.dc59b71bb829e485bd0e.hot-update.js"
+          "name": "main.e1489ea9f4ec250fe924.hot-update.js"
         }
       ],
       "filteredAssets": 0,
@@ -1025,6 +1053,23 @@
       "auxiliaryAssetsSize": null,
       "children": {},
       "childAssets": {}
+    },
+    "pages-youtube": {
+      "name": "pages-youtube",
+      "chunks": [
+        "pages-youtube"
+      ],
+      "assets": [
+        {
+          "name": "pages-youtube.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 1,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
     }
   },
   "generator": "loadable-components",
@@ -1033,7 +1078,7 @@
       "id": "main",
       "files": [
         "main.js",
-        "main.dc59b71bb829e485bd0e.hot-update.js"
+        "main.e1489ea9f4ec250fe924.hot-update.js"
       ]
     },
     {
@@ -1130,6 +1175,12 @@
       "id": "pages-page-not-found",
       "files": [
         "pages-page-not-found.js"
+      ]
+    },
+    {
+      "id": "pages-youtube",
+      "files": [
+        "pages-youtube.js"
       ]
     },
     {
