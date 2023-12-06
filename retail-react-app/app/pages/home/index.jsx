@@ -20,8 +20,20 @@ import {
     Flex,
     Stack,
     Container,
-    Link
+    Link,
+    useNumberInput,
+    Input,
+    Select
 } from '@salesforce/retail-react-app/app/components/shared/ui'
+
+//Import directly from chakra ui
+import {
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper
+} from '@chakra-ui/react'
 
 // Project Components
 import Hero from '@salesforce/retail-react-app/app/components/hero'
@@ -52,6 +64,18 @@ import {useProductSearch} from '@salesforce/commerce-sdk-react'
  * categories and products, data is from local file.
  */
 const Home = () => {
+    const {getInputProps, getIncrementButtonProps, getDecrementButtonProps} = useNumberInput({
+        step: 1,
+        defaultValue: 0
+        //   min: 1,
+        //   max: 6,
+        //   precision: 2,
+    })
+
+    const inc = getIncrementButtonProps()
+    const dec = getDecrementButtonProps()
+    const input = getInputProps()
+
     const intl = useIntl()
     const einstein = useEinstein()
     const {pathname} = useLocation()
@@ -155,6 +179,40 @@ const Home = () => {
                         )
                     })}
                 </SimpleGrid>
+            </Section>
+
+            <Section
+                padding={4}
+                paddingTop={32}
+                title={intl.formatMessage({
+                    defaultMessage: 'Calculator'
+                })}
+            >
+                <HStack mt={10}>
+                    <NumberInput defaulValue={1}>
+                        {/* <NumberInputField /> */}
+                        <Input {...input} />
+                        <NumberInputStepper>
+                            <NumberIncrementStepper {...inc} />
+                            <NumberDecrementStepper {...dec} />
+                        </NumberInputStepper>
+                    </NumberInput>
+
+                    <HStack maxW="320px">
+                        <Button {...inc}>+</Button>
+                        <Input {...input} />
+                        <Button {...dec}>-</Button>
+                    </HStack>
+
+                    <Select>
+                        <option value="option2">+</option>
+                        <option value="option2">-</option>
+                        <option value="option2">*</option>
+                        <option value="option3">/</option>
+                    </Select>
+                    <Button>Clear</Button>
+                </HStack>
+                <Text>Here is the result</Text>
             </Section>
 
             {productSearchResult && (
