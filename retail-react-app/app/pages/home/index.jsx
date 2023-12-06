@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {useLocation} from 'react-router-dom'
 
@@ -20,7 +20,9 @@ import {
     Flex,
     Stack,
     Container,
-    Link
+    Link,
+    RadioGroup,
+    Radio
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 
 // Project Components
@@ -52,6 +54,8 @@ import {useProductSearch} from '@salesforce/commerce-sdk-react'
  * categories and products, data is from local file.
  */
 const Home = () => {
+    const [value, setValue] = useState('1')
+
     const intl = useIntl()
     const einstein = useEinstein()
     const {pathname} = useLocation()
@@ -75,6 +79,21 @@ const Home = () => {
 
     return (
         <Box data-testid="home-page" layerStyle="page">
+            {/* The radio buttons managing state */}
+            <RadioGroup
+                onChange={(val) => {
+                    setValue(val)
+                }}
+                value={value}
+            >
+                <Text>{value}</Text>
+                <HStack>
+                    <Radio value="1">First</Radio>
+                    <Radio value="2">Second</Radio>
+                    <Radio value="3">Third</Radio>
+                </HStack>
+            </RadioGroup>
+
             <Seo
                 title="Home Page"
                 description="Commerce Cloud Retail React App"
