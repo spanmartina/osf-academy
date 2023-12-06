@@ -4,4 +4,4 @@ dist/
 .DS-Store
 coverage/
 .vscode/
-build/loadable-stats.json
+build/
