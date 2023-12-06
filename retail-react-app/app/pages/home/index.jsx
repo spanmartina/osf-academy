@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import React, {useEffect} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {useLocation} from 'react-router-dom'
 
@@ -20,7 +20,8 @@ import {
     Flex,
     Stack,
     Container,
-    Link
+    Link,
+    Input
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 
 // Project Components
@@ -44,7 +45,7 @@ import {
 } from '@salesforce/retail-react-app/app/constants'
 import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hooks'
 import {useProductSearch} from '@salesforce/commerce-sdk-react'
-
+import {useCommerceApi, useAccessToken} from '@salesforce/commerce-sdk-react'
 /**
  * This is the home page for Retail React App.
  * The page is created for demonstration purposes.
@@ -55,19 +56,145 @@ const Home = () => {
     const intl = useIntl()
     const einstein = useEinstein()
     const {pathname} = useLocation()
+    const api = useCommerceApi()
+    const {getTokenWhenReady} = useAccessToken()
 
     const {res} = useServerContext()
     if (res) {
         res.set('Cache-Control', `max-age=${MAX_CACHE_AGE}`)
     }
 
-    const {data: productSearchResult, isLoading} = useProductSearch({
+    const [inputFields, setInputFields] = useState([''])
+    // State for managing product search result
+    const [productSearchResult, setProductSearchResult] = useState({
+        data: {
+            hits: []
+        },
+        isLoading: true
+    })
+
+    // Fetch initial products
+    const {data: initialProductSearchResult, isLoading: initialLoading} = useProductSearch({
         parameters: {
             refine: [`cgid=${HOME_SHOP_PRODUCTS_CATEGORY_ID}`, 'htype=master'],
             limit: HOME_SHOP_PRODUCTS_LIMIT
         }
     })
 
+    useEffect(() => {
+        // Update state with the initial products
+        setProductSearchResult(() => ({
+            data: {
+                hits: initialProductSearchResult?.hits || []
+            },
+            isLoading: initialLoading
+        }))
+    }, []) // No dependencies to ensure the effect only runs once after the initial render
+
+    const fetchProducts = async (productIds) => {
+        // If there is no id: fetch intial data
+        if (!productIds?.length) {
+            setProductSearchResult(() => ({
+                data: {
+                    hits: initialProductSearchResult?.hits || []
+                },
+                isLoading: initialLoading
+            }))
+        } else {
+            try {
+                const token = await getTokenWhenReady()
+                const products = await api.shopperProducts.getProducts({
+                    parameters: {ids: productIds.join(',')},
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                console.log('Products', products)
+                if (products && products.total > 0) {
+                    //Format response data to have access to the images
+                    const formattedProducts = {
+                        data: {
+                            hits: products.data.map((product) => ({
+                                ...product, // Copy all properties from the fetched product
+                                image: {
+                                    alt: product.imageGroups[0].images[0].alt,
+                                    disBaseLink: product.imageGroups[0].images[0].disBaseLink,
+                                    link: product.imageGroups[0].images[0].link,
+                                    title: product.imageGroups[0].images[0].title
+                                }
+                            }))
+                        },
+                        isLoading: false
+                    }
+                    console.log('formattedProducts', formattedProducts)
+
+                    return formattedProducts
+                } else {
+                    // Handle the case when products is undefined
+                    console.log('No products fetched')
+                    const noProducts = {
+                        data: {
+                            hits: []
+                        },
+                        isLoading: false
+                    }
+                    return noProducts
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error)
+                throw error
+            }
+        }
+    }
+
+    console.log('Produs search', productSearchResult)
+
+    //Handle product id fetch when "Get Product" button is clicked
+    const handleGetProduct = async () => {
+        const productIds = inputFields.filter((field) => field.trim() !== '')
+
+        try {
+            // Update loading state
+            setProductSearchResult((prev) => ({...prev, isLoading: true}))
+
+            const fetchedProducts = await fetchProducts(productIds)
+
+            if (fetchedProducts) {
+                // Process the fetched products and update state
+                setProductSearchResult({
+                    data: {
+                        hits: fetchedProducts.data?.hits
+                    },
+                    isLoading: false
+                })
+            }
+        } catch (error) {
+            console.error('Error handling fetched products:', error)
+        }
+    }
+
+    const handleRemoveProduct = (index) => {
+        const newInputFields = [...inputFields]
+        newInputFields.splice(index, 1)
+        setInputFields(newInputFields)
+    }
+
+    const handleAddField = () => {
+        // Check if input fields are empty
+        const isAnyFieldEmpty = inputFields.some((field) => field === '')
+
+        if (!isAnyFieldEmpty) {
+            setInputFields([...inputFields, ''])
+        }
+    }
+
+    const handleInputChange = (index, value) => {
+        const newInputFields = [...inputFields]
+        newInputFields[index] = value
+        setInputFields(newInputFields)
+    }
+
+    const isAddFieldDisabled = inputFields.some((field) => field === '') // Check if any field is empty
     /**************** Einstein ****************/
     useEffect(() => {
         einstein.sendViewPage(pathname)
@@ -201,10 +328,45 @@ const Home = () => {
                         }
                     )}
                 >
+                    <Box pt={8}>
+                        {inputFields.map((value, index) => (
+                            <Flex key={index} align="center" marginBottom={4}>
+                                <Input
+                                    type="text"
+                                    placeholder="Enter Product ID"
+                                    value={value}
+                                    onChange={(e) => handleInputChange(index, e.target.value)}
+                                    flex={1}
+                                    marginRight={2}
+                                />
+                                <Button onClick={() => handleRemoveProduct(index)} ml={4}>
+                                    Remove
+                                </Button>
+                            </Flex>
+                        ))}
+                        <Button
+                            onClick={handleAddField}
+                            mt={4}
+                            width="full"
+                            isDisabled={isAddFieldDisabled}
+                        >
+                            Add Field
+                        </Button>
+                        <Button onClick={handleGetProduct} mt={4} width="full">
+                            Get Product
+                        </Button>
+                    </Box>
+                    {!productSearchResult.data.hits.length && !productSearchResult.isLoading && (
+                        <Box mt={8} p={4} textAlign="center">
+                            <Text fontWeight={700} color={'red.500'}>
+                                No Products Found.
+                            </Text>
+                        </Box>
+                    )}
                     <Stack pt={8} spacing={16}>
                         <ProductScroller
-                            products={productSearchResult?.hits}
-                            isLoading={isLoading}
+                            products={productSearchResult?.data?.hits}
+                            isLoading={productSearchResult.isLoading}
                         />
                     </Stack>
                 </Section>
