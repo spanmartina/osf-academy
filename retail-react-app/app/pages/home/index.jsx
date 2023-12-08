@@ -44,6 +44,7 @@ import {
 } from '@salesforce/retail-react-app/app/constants'
 import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hooks'
 import {useProductSearch} from '@salesforce/commerce-sdk-react'
+import Calculator from '@salesforce/retail-react-app/app/components/calculator/index'
 
 /**
  * This is the home page for Retail React App.
@@ -209,6 +210,8 @@ const Home = () => {
                     </Stack>
                 </Section>
             )}
+
+            <Calculator />
 
             <Section
                 padding={4}
