@@ -44,7 +44,7 @@ const Wishlist = loadable(() => import('./pages/account/wishlist'), {
     fallback
 })
 const PageNotFound = loadable(() => import('./pages/page-not-found'))
-const WeatherApp = loadable(() => import('./pages/weather-app'), {fallback})
+const WeatherApp = loadable(() => import('./pages/weather'), {fallback})
 
 export const routes = [
     {
@@ -108,8 +108,7 @@ export const routes = [
     },
     {
         path: '/weather-app',
-        component: WeatherApp,
-        exact: true
+        component: WeatherApp
     },
     {
         path: '*',
