@@ -52,13 +52,13 @@ const WeatherApp = () => {
         // Set background color based on weather type
         switch (weatherType) {
             case 'clear':
-                color = 'blue.50'
+                color = 'yellow.200'
                 break
             case 'clouds':
-                color = 'gray.200'
+                color = 'blue.200'
                 break
             case 'rain':
-                color = 'blue.500'
+                color = 'gray.200'
                 break
             case 'snow':
                 color = 'whiteAlpha.100'
@@ -98,7 +98,7 @@ const WeatherApp = () => {
                 message = `${weatherData.weather[0].main} expected in ${weatherData.name}.`
                 break
             default:
-                message = `No match for: ${description}`
+                console.error(`No match for: ${description}`)
                 break
         }
 
@@ -129,11 +129,11 @@ const WeatherApp = () => {
                     />
                     <Button onClick={handleSearch}>Search</Button>
                 </HStack>
-                {loading && <Text id="loading">Loading...</Text>}
+                {loading && !weather.description && <Text id="loading">Loading...</Text>}
             </Container>
             {weather.description && (
                 <Container maxW={'6xl'}>
-                    <Container background={weather.color}>
+                    <Container background={weather.color} py={3}>
                         {weather.icon && (
                             <Image
                                 src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
