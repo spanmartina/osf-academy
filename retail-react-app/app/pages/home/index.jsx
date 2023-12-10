@@ -109,7 +109,6 @@ const Home = () => {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                console.log('Products', products)
                 if (products && products.total > 0) {
                     //Format response data to have access to the images
                     const formattedProducts = {
@@ -126,12 +125,9 @@ const Home = () => {
                         },
                         isLoading: false
                     }
-                    console.log('formattedProducts', formattedProducts)
-
                     return formattedProducts
                 } else {
                     // Handle the case when products is undefined
-                    console.log('No products fetched')
                     const noProducts = {
                         data: {
                             hits: []
@@ -146,9 +142,6 @@ const Home = () => {
             }
         }
     }
-
-    console.log('Produs search', productSearchResult)
-
     //Handle product id fetch when "Get Product" button is clicked
     const handleGetProduct = async () => {
         const productIds = inputFields.filter((field) => field.trim() !== '')
