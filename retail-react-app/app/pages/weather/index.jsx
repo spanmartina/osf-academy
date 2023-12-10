@@ -8,7 +8,8 @@ import {
     Container,
     Input,
     HStack,
-    Image
+    Image,
+    Heading
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import apiKey from '@salesforce/retail-react-app/app/pages/weather/apiKey'
 
@@ -31,7 +32,6 @@ const WeatherApp = () => {
             )
             if (response.ok) {
                 const data = await response.json()
-                console.log('Data', data)
                 setWeatherData(data)
                 setLoading(false)
             }
@@ -52,16 +52,16 @@ const WeatherApp = () => {
         // Set background color based on weather type
         switch (weatherType) {
             case 'clear':
-                color = '#3498db'
+                color = 'blue.50'
                 break
             case 'clouds':
-                color = '#7f8c8d'
+                color = 'gray.200'
                 break
             case 'rain':
-                color = '#2980b9'
+                color = 'blue.500'
                 break
             case 'snow':
-                color = '#ecf0f1'
+                color = 'whiteAlpha.100'
                 break
             default:
                 color = '' // Default background color
@@ -78,7 +78,7 @@ const WeatherApp = () => {
                 break
 
             case description.includes('broken clouds'):
-                message = `Broken cloudsin ${city}.`
+                message = `Broken clouds in ${city}.`
                 break
             case description.includes('sunny') || (description.includes('clear') && isSingleWord):
                 message = `It's ${description} in ${weatherData.name}.`
@@ -98,7 +98,7 @@ const WeatherApp = () => {
                 message = `${weatherData.weather[0].main} expected in ${weatherData.name}.`
                 break
             default:
-                console.log('No match for: ', description)
+                message = `No match for: ${description}`
                 break
         }
 
@@ -115,24 +115,34 @@ const WeatherApp = () => {
 
     return (
         <Box marginTop={10}>
-            <Container maxW={'6xl'} marginTop={8}>
-                <Text>Weather App</Text>
+            <Container maxW={'6xl'} marginTop={4}>
+                <Heading size="3md" marginBottom={4}>
+                    Weather App
+                </Heading>
                 <HStack>
-                    <Input value={city} onChange={(e) => setCity(e.target.value)} />
+                    <Input
+                        value={city}
+                        onChange={(e) => {
+                            setCity(e.target.value)
+                            setLoading(true)
+                        }}
+                    />
                     <Button onClick={handleSearch}>Search</Button>
                 </HStack>
                 {loading && <Text id="loading">Loading...</Text>}
             </Container>
-            {weather && (
-                <Container maxW={'6xl'} background={weather.color}>
-                    {weather.icon && (
-                        <Image
-                            src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-                            alt="Weather Icon"
-                        />
-                    )}
-                    <Text>{weather.description}</Text>
-                    <Text>{`The temperature is ${weather.temperature}°C`}</Text>
+            {weather.description && (
+                <Container maxW={'6xl'}>
+                    <Container background={weather.color}>
+                        {weather.icon && (
+                            <Image
+                                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                                alt="Weather Icon"
+                            />
+                        )}
+                        <Text>{weather.description}</Text>
+                        <Text>{`The temperature is ${weather.temperature}°C`}</Text>
+                    </Container>
                 </Container>
             )}
         </Box>
